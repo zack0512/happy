@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> 🎉 教師節感恩 ＆ 雷麗 x 珆亘 誕辰雙重狂歡趴 🎂</title>
+    <title>沙特驚喜- 🎉 教師節 x 生日🎂</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -144,10 +144,10 @@
             </div>
             <div>
                 <h1 class="font-funny text-lg sm:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-sky-300 via-amber-200 to-emerald-300 font-bold">
-                    教師節感恩 ✕ 雙星誕辰趴
+                    教師節感恩 ✕ 生日慶祝
                 </h1>
                 <p class="text-[11px] sm:text-xs text-slate-300 font-cute tracking-wider">
-                    🎉 Happy Teacher's Day & Happy Birthday Lei-Li & Yi-Xuan! 🎉
+                    🎉 Happy Teacher's Day & Happy Birthday！ 🎉
                 </p>
             </div>
         </div>
@@ -170,12 +170,12 @@
     <nav class="w-full max-w-2xl z-20 flex justify-center items-center gap-2 sm:gap-4 mb-6">
         <button id="tab-leili" onclick="switchTab('leili')" class="tab-btn active flex-1 py-3 px-3 rounded-2xl glass-card-ice text-sky-200 font-bold text-xs sm:text-sm flex items-center justify-center space-x-2 border border-sky-400/50">
             <span class="text-base sm:text-lg">❄️</span>
-            <span class="font-funny tracking-wider">雷麗 Let it go!</span>
+            <span class="font-funny tracking-wider">雷麗 （Let it go!）</span>
         </button>
 
         <button id="tab-yixuan" onclick="switchTab('yixuan')" class="tab-btn flex-1 py-3 px-3 rounded-2xl glass-card-warrior text-emerald-200 font-bold text-xs sm:text-sm flex items-center justify-center space-x-2 border border-emerald-400/50">
             <span class="text-base sm:text-lg">🪲</span>
-            <span class="font-funny tracking-wider">珆亘 毛利小蟑螂</span>
+            <span class="font-funny tracking-wider">珆亘（毛利小蟑螂）</span>
         </button>
 
         <button id="tab-teachers" onclick="switchTab('teachers')" class="tab-btn flex-1 py-3 px-3 rounded-2xl glass-card-teacher text-amber-200 font-bold text-xs sm:text-sm flex items-center justify-center space-x-2 border border-amber-400/50">
@@ -194,7 +194,7 @@
             
             <div class="relative z-10 space-y-4">
                 <div class="inline-block px-4 py-1.5 rounded-full bg-sky-500/30 text-sky-200 border border-sky-300/40 text-xs font-bold tracking-widest uppercase">
-                    👑 冰雪女王 · 誕辰慶典 👑
+                    👑 冰雪女王 · 生日慶典 👑
                 </div>
 
                 <div class="flex justify-center items-center space-x-3 my-2">
@@ -211,10 +211,7 @@
 
                 <div class="bg-slate-900/60 p-5 sm:p-7 rounded-2xl border border-sky-400/30 text-sky-100 text-sm sm:text-base leading-relaxed text-left font-sans shadow-inner">
                     <p id="body-leili" class="whitespace-pre-line">
-                        親愛的雷麗（Let it go!）：
-                        祝妳生日快樂！願妳像 Elsa 一樣充滿自信與強大魔法，勇敢做最璀璨的自己！
-                        無論面對什麼挑戰，隨手一揮都能把困難凍結，釋放最酷最耀眼的冰雪光芒！
-                        新的一歲，願妳煩惱全 Let it go，幸福與好運無限 Come on in！❄️✨💎
+                        祝妳生日快樂！Let it go❄️✨💎
                     </p>
                 </div>
 
@@ -238,7 +235,7 @@
 
             <div class="relative z-10 space-y-4">
                 <div class="inline-block px-4 py-1.5 rounded-full bg-emerald-500/30 text-emerald-200 border border-emerald-300/40 text-xs font-bold tracking-widest uppercase">
-                    🛡️ 超級毛利小蟑螂 · 生日霸王趴 🛡️
+                    🛡️ 超級毛利小蟑螂 · 生日趴 🛡️
                 </div>
 
                 <div class="flex justify-center items-center space-x-3 my-2">
@@ -250,22 +247,20 @@
                 </div>
 
                 <div class="text-emerald-300 font-cute font-bold text-lg sm:text-xl tracking-wider">
-                    💪 「小蟑螂威武！生命力爆表、橫掃千軍、無所畏懼！」 💪
+                    💪 「毛利小蟑螂威武！」 💪
                 </div>
 
                 <div class="bg-slate-900/60 p-5 sm:p-7 rounded-2xl border border-emerald-400/30 text-emerald-100 text-sm sm:text-base leading-relaxed text-left font-sans shadow-inner">
                     <p id="body-yixuan" class="whitespace-pre-line">
                         親愛的珆亘（毛利小蟑螂）：
-                        祝你生日快樂！作為全場最強大的「毛利小蟑螂」戰士，願你擁有無敵的生命力與無窮的活力！
-                        不論遇到什麼挫折都能像戰士一樣霸氣衝鋒、越挫越勇，永遠笑口常開、元氣滿滿！
-                        新的一歲，願你橫掃所有難關，快樂無限飆升！🪲🔥💥
+                        祝妳生日快樂！🔥💥
                     </p>
                 </div>
 
                 <!-- Interactive Skill Buttons -->
                 <div class="flex flex-wrap justify-center gap-3 pt-2">
                     <button onclick="triggerRoachCharge(event)" class="px-6 py-3 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-600 to-orange-500 hover:from-emerald-400 hover:to-orange-400 text-white font-bold text-sm shadow-lg hover:shadow-emerald-500/50 transition-all active:scale-95 border border-emerald-200/50 flex items-center space-x-2">
-                        <span>🪲 毛利小蟑螂 飛天衝鋒！</span>
+                        <span>毛利小蟑螂 飛天衝鋒！</span>
                     </button>
                     <button onclick="triggerWarriorHaka()" class="px-6 py-3 rounded-2xl bg-emerald-950/80 hover:bg-emerald-900 text-emerald-200 font-bold text-sm shadow-md transition-all active:scale-95 border border-emerald-400/40 flex items-center space-x-2">
                         <span>🥁 戰士戰舞彩帶炮</span>
@@ -301,8 +296,7 @@
                     <p id="body-teachers" class="whitespace-pre-line">
                         敬愛的老師們：
                         祝全體老師教師節快樂！感謝您們日常辛勤的付出與無私的教誨，用智慧的明燈點亮我們前行的道路。
-                        您們傳授的知識與人生哲理，是我們最珍貴的財富。
-                        祝各位老師身體健康、工作順心、事事如意、桃李滿天下！🍎💐📖✨
+                        💐📖✨
                     </p>
                 </div>
 
