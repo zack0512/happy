@@ -1,1 +1,561 @@
 
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>沙特-慶祝教師節與生日</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome 圖示 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti 禮花效果 -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: '#FAF6F0',
+                        gold: {
+                            100: '#FBF4E2',
+                            300: '#E5C887',
+                            500: '#D4AF37',
+                            600: '#B89428',
+                        },
+                        rose: {
+                            50: '#FFF5F5',
+                            100: '#FED7D7',
+                            400: '#F6AD55',
+                            500: '#E53E3E',
+                        },
+                        purple: {
+                            50: '#F8F5FF',
+                            100: '#E9D8FD',
+                            500: '#805AD5',
+                            700: '#553C9A',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Noto Serif TC"', 'serif'],
+                        rounded: ['"Zen Maru Gothic"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Zen Maru Gothic', sans-serif;
+            background: linear-gradient(135deg, #FAF6F0 0%, #F5EBE6 50%, #EBD9ED 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* 背景流動光暈 */
+        .bg-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, rgba(233, 216, 253, 0.2) 40%, rgba(255, 255, 255, 0) 70%);
+            filter: blur(40px);
+            pointer-events: none;
+            z-index: 0;
+            animation: floatGlow 12s ease-in-out infinite alternate;
+        }
+
+        @keyframes floatGlow {
+            0% { transform: translate(-10%, -10%) scale(1); }
+            100% { transform: translate(20%, 20%) scale(1.15); }
+        }
+
+        /* 3D 翻頁信封與卡片 */
+        .perspective-1000 {
+            perspective: 1200px;
+        }
+
+        .card-inner {
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .card-inner.is-open {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        /* 金色柔光文字 */
+        .gold-text-gradient {
+            background: linear-gradient(135deg, #B89428 0%, #D4AF37 50%, #F3E5AB 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* 印章特效 */
+        .seal-stamp {
+            background: radial-gradient(circle, #d9463e 0%, #a8231c 100%);
+            box-shadow: 0 4px 10px rgba(168, 35, 28, 0.3), inset 0 2px 4px rgba(255,255,255,0.4);
+        }
+
+        /* 自訂滾動條 */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.03);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(212, 175, 55, 0.4);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(212, 175, 55, 0.7);
+        }
+    </style>
+</head>
+<body class="relative flex flex-col justify-between items-center min-h-screen text-gray-800 p-4 sm:p-6 select-none">
+
+    <!-- 背景光暈 -->
+    <div class="bg-glow top-0 left-0"></div>
+    <div class="bg-glow bottom-0 right-0" style="animation-delay: -6s;"></div>
+
+    <canvas id="petalsCanvas" class="fixed inset-0 pointer-events-none z-10"></canvas>
+
+    <header class="w-full max-w-4xl z-20 flex flex-wrap justify-between items-center gap-3 py-2 px-4 bg-white/60 backdrop-blur-md rounded-2xl shadow-sm border border-white/80">
+        <div class="flex items-center space-x-2">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-gold-500 to-amber-200 flex items-center justify-center text-white shadow-md">
+                <i class="fa-solid font-serif text-sm">恩</i>
+            </div>
+            <span class="font-serif font-bold text-gray-800 tracking-wide text-sm sm:text-base">祝所有老師教師節快樂，祝雷麗（Let it go!）與珆亘（毛利小蟑螂）生日快樂</span>
+        </div>
+
+        <div class="flex items-center space-x-2 sm:space-x-3">
+            <!-- 背景音樂開關 -->
+            <button id="musicBtn" onclick="toggleMusic()" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white/80 hover:bg-gold-100 text-gold-600 transition-all border border-gold-300/50 shadow-sm text-xs sm:text-sm">
+                <i id="musicIcon" class="fa-solid fa-music"></i>
+                <span id="musicText">播放音樂</span>
+            </button>
+
+            <!-- 編輯姓名彈窗按鈕 -->
+            <button onclick="openEditModal()" class="flex items-center space-x-1 px-3 py-1.5 rounded-full bg-gold-500 hover:bg-gold-600 text-white transition-all shadow-sm text-xs sm:text-sm">
+                <i class="fa-solid fa-pen-to-square"></i>
+                <span>客製祝福</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="w-full max-w-2xl my-auto z-20 py-6">
+        <!-- 3D 翻轉卡片容器 -->
+        <div class="perspective-1000 w-full min-h-[480px] sm:min-h-[520px]">
+            <div id="cardInner" class="card-inner relative w-full h-full min-h-[480px] sm:min-h-[520px]">
+
+                <!-- ================= 封面 / 信封正面 ================= -->
+                <div class="card-front absolute inset-0 w-full h-full bg-gradient-to-br from-amber-50 via-cream to-purple-50 rounded-3xl p-6 sm:p-10 border-2 border-gold-300/60 shadow-2xl flex flex-col justify-between items-center text-center cursor-pointer hover:shadow-gold-500/10 transition-all group" onclick="toggleCard(true)">
+                    
+                    <!-- 裝飾角花 -->
+                    <div class="absolute top-4 left-4 border-t-2 border-l-2 border-gold-500/40 w-6 h-6 rounded-tl-lg"></div>
+                    <div class="absolute top-4 right-4 border-t-2 border-r-2 border-gold-500/40 w-6 h-6 rounded-tr-lg"></div>
+                    <div class="absolute bottom-4 left-4 border-b-2 border-l-2 border-gold-500/40 w-6 h-6 rounded-bl-lg"></div>
+                    <div class="absolute bottom-4 right-4 border-b-2 border-r-2 border-gold-500/40 w-6 h-6 rounded-br-lg"></div>
+
+                    <!-- 信封圖示與標題 -->
+                    <div class="mt-4">
+                        <span class="inline-block px-3 py-1 rounded-full bg-gold-100 text-gold-600 font-serif text-xs tracking-widest uppercase mb-3 border border-gold-300/40">
+                            Special Blessing
+                        </span>
+                        <h2 class="text-xs sm:text-sm text-gray-500 tracking-widest font-serif">致</h2>
+                        <h1 id="coverTeacherName" class="text-3xl sm:text-4xl font-serif font-bold text-gray-800 mt-1 mb-2 tracking-wide gold-text-gradient">
+                            敬愛的老師
+                        </h1>
+                    </div>
+
+                    <!-- 火漆印章主視覺 -->
+                    <div class="my-6 relative flex items-center justify-center">
+                        <div class="absolute inset-0 rounded-full bg-gold-400/20 animate-ping"></div>
+                        <div class="seal-stamp w-24 h-24 sm:w-28 sm:h-28 rounded-full flex flex-col items-center justify-center text-white border-4 border-amber-200/50 shadow-xl group-hover:scale-105 transition-transform duration-300">
+                            <i class="fa-solid fa-cake-candles text-xl mb-1"></i>
+                            <span class="font-serif font-bold text-sm tracking-wider">雙重祝願</span>
+                            <span class="text-[10px] opacity-80 font-serif">Click to Open</span>
+                        </div>
+                    </div>
+
+                    <!-- 提示文字 -->
+                    <div class="mb-2">
+                        <p class="text-xs sm:text-sm text-gray-600 font-serif tracking-widest flex items-center justify-center gap-2">
+                            <span>✦ 點擊開啟尊屬賀卡 ✦</span>
+                        </p>
+                        <p class="text-[11px] text-gray-400 mt-1">教師節快樂</p>
+                    </div>
+                </div>
+
+                <!-- ================= 信件內頁 / 卡片背面 ================= -->
+                <div class="card-back absolute inset-0 w-full h-full bg-white/90 backdrop-blur-md rounded-3xl p-6 sm:p-8 border-2 border-gold-300/80 shadow-2xl flex flex-col justify-between text-left overflow-y-auto">
+                    
+                    <!-- 頁首：主題切換籤頁與關閉 -->
+                    <div class="flex justify-between items-center border-b border-gray-100 pb-3 mb-3">
+                        <div class="flex space-x-1 sm:space-x-2 bg-cream/80 p-1 rounded-xl border border-gold-100">
+                            <button onclick="switchTab('both')" id="tab-both" class="tab-btn active px-2.5 py-1 text-xs rounded-lg font-serif transition-all bg-gold-500 text-white shadow-sm">
+                                雙重祝福
+                            </button>
+                            <button onclick="switchTab('teacher')" id="tab-teacher" class="tab-btn px-2.5 py-1 text-xs rounded-lg font-serif transition-all text-gray-600 hover:text-gold-600">
+                                教師節
+                            </button>
+                            <button onclick="switchTab('birthday')" id="tab-birthday" class="tab-btn px-2.5 py-1 text-xs rounded-lg font-serif transition-all text-gray-600 hover:text-gold-600">
+                                生日
+                            </button>
+                        </div>
+
+                        <!-- 翻回正面按鈕 -->
+                        <button onclick="toggleCard(false)" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gold-100 text-gray-500 hover:text-gold-600 flex items-center justify-center transition-all">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+
+                    <!-- 賀卡主要內容顯示區 -->
+                    <div class="flex-1 my-2 overflow-y-auto pr-1">
+                        <!-- 抬頭 -->
+                        <div class="mb-4">
+                            <h3 id="displayTeacherName" class="text-xl sm:text-2xl font-serif font-bold text-gray-800 border-b-2 border-gold-300/40 inline-block pb-1">
+                                敬愛的 老師：
+                            </h3>
+                        </div>
+
+                        <!-- 祝福內容段落 (動態切換/編輯) -->
+                        <div id="cardContent" class="font-serif leading-relaxed text-gray-700 text-sm sm:text-base space-y-3">
+                            <!-- 預設內容由 JS 動態載入 -->
+                        </div>
+                    </div>
+
+                    <!-- 頁腳落款與禮花互動 -->
+                    <div class="border-t border-gray-100 pt-3 mt-2 flex justify-between items-end">
+                        <div>
+                            <p class="text-xs text-gray-400 font-serif">祝願您</p>
+                            <p class="text-xs sm:text-sm font-serif font-bold text-gold-600">教安常樂 · 歲歲平安</p>
+                        </div>
+
+                        <div class="flex items-center space-x-2">
+                            <!-- 放彩帶慶祝按鈕 -->
+                            <button onclick="triggerConfetti(event)" class="px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-400 to-gold-500 hover:from-amber-500 hover:to-gold-600 text-white text-xs font-serif shadow-md transition-all flex items-center gap-1 active:scale-95">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                <span>獻上祝福禮花</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="z-20 text-center text-xs text-gray-400 font-serif my-2">
+        <p>桃李不言 · 下自成蹊 | 謹以此卡獻給最敬愛的老師</p>
+    </footer>
+
+    <div id="editModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-gold-200 animate-fade-in">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h3 class="font-serif font-bold text-lg text-gray-800">客製化您的專屬祝福</h3>
+                <button onclick="closeEditModal()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4 font-serif">
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 mb-1">老師姓名 / 稱謂：</label>
+                    <input type="text" id="inputTeacherName" class="w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-gold-500 text-sm" placeholder="例：林靜宜 老師">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 mb-1">自訂謝師恩祝福語：</label>
+                    <textarea id="inputTeacherText" rows="3" class="w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-gold-500 text-sm" placeholder="輸入感謝老師傳道授業的話..."></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 mb-1">自訂生日祝願：</label>
+                    <textarea id="inputBirthdayText" rows="3" class="w-full px-3 py-2 border border-gray-200 rounded-xl focus:outline-none focus:border-gold-500 text-sm" placeholder="輸入生日賀詞..."></textarea>
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-end space-x-2">
+                <button onclick="closeEditModal()" class="px-4 py-2 rounded-xl text-xs text-gray-500 hover:bg-gray-100 font-serif">取消</button>
+                <button onclick="saveCustomContent()" class="px-4 py-2 rounded-xl bg-gold-500 hover:bg-gold-600 text-white text-xs font-serif shadow-md">儲存更新</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 預設資料 ---
+        let currentTab = 'both';
+        let cardData = {
+            name: "敬愛的老師",
+            teacherText: "三尺講台存日月，支粉筆寫春秋。感謝您以浩瀚知識滋養我們的晨昏，以溫暖耐心指引我們的迷茫。傳道、授業、解惑，您不僅是學問上的導師，更是人生路上的明燈。",
+            birthdayText: "在這特別的日子裡，欣逢您的誕辰吉祥。願歲月溫柔待您，許您四季康泰、事事順心。願您的生活中常伴歡笑與花香，如星辰般璀璨，如松柏般長青！",
+        };
+
+        // --- 卡片開合邏輯 ---
+        function toggleCard(isOpen) {
+            const cardInner = document.getElementById('cardInner');
+            if (isOpen) {
+                cardInner.classList.add('is-open');
+                playBellSound();
+                setTimeout(() => triggerConfetti(), 400);
+            } else {
+                cardInner.classList.remove('is-open');
+            }
+        }
+
+        // --- 頁籤切換邏輯 ---
+        function switchTab(tab) {
+            currentTab = tab;
+            // 更新 UI 樣式
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-gold-500', 'text-white', 'shadow-sm');
+                btn.classList.add('text-gray-600');
+            });
+            const activeBtn = document.getElementById(`tab-${tab}`);
+            activeBtn.classList.add('bg-gold-500', 'text-white', 'shadow-sm');
+            activeBtn.classList.remove('text-gray-600');
+
+            renderContent();
+        }
+
+        // 渲染內文
+        function renderContent() {
+            const container = document.getElementById('cardContent');
+            let html = '';
+
+            if (currentTab === 'both' || currentTab === 'teacher') {
+                html += `<p class="p-3 bg-amber-50/60 rounded-xl border-l-4 border-gold-500"><i class="fa-solid fa-graduation-cap text-gold-600 mr-2"></i>${cardData.teacherText}</p>`;
+            }
+
+            if (currentTab === 'both' || currentTab === 'birthday') {
+                html += `<p class="p-3 bg-purple-50/60 rounded-xl border-l-4 border-purple-400"><i class="fa-solid fa-cake-candles text-purple-500 mr-2"></i>${cardData.birthdayText}</p>`;
+            }
+
+            if (currentTab === 'both') {
+                html += `<p class="text-xs text-center text-gold-600 font-serif pt-1">✦ 雙祝並臻 · 師恩難忘 · 生日快樂 ✦</p>`;
+            }
+
+            container.innerHTML = html;
+            document.getElementById('displayTeacherName').innerText = `${cardData.name}：`;
+            document.getElementById('coverTeacherName').innerText = cardData.name;
+        }
+
+        // --- 彈窗編輯邏輯 ---
+        function openEditModal() {
+            document.getElementById('inputTeacherName').value = cardData.name;
+            document.getElementById('inputTeacherText').value = cardData.teacherText;
+            document.getElementById('inputBirthdayText').value = cardData.birthdayText;
+            document.getElementById('editModal').classList.remove('hidden');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.add('hidden');
+        }
+
+        function saveCustomContent() {
+            const name = document.getElementById('inputTeacherName').value.trim();
+            const teacherText = document.getElementById('inputTeacherText').value.trim();
+            const birthdayText = document.getElementById('inputBirthdayText').value.trim();
+
+            if (name) cardData.name = name;
+            if (teacherText) cardData.teacherText = teacherText;
+            if (birthdayText) cardData.birthdayText = birthdayText;
+
+            renderContent();
+            closeEditModal();
+        }
+
+        function triggerConfetti(e) {
+            let opts = {
+                particleCount: 70,
+                spread: 60,
+                origin: { y: 0.7 }
+            };
+
+            if (e) {
+                const rect = e.target.getBoundingClientRect();
+                opts.origin = {
+                    x: (rect.left + rect.width / 2) / window.innerWidth,
+                    y: (rect.top + rect.height / 2) / window.innerHeight
+                };
+            }
+
+            confetti({
+                ...opts,
+                colors: ['#D4AF37', '#E9D8FD', '#FED7D7', '#F6AD55']
+            });
+        }
+
+        let audioCtx = null;
+        let isPlaying = false;
+        let melodyInterval = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        // 播放開啟聲響
+        function playBellSound() {
+            initAudio();
+            if (!audioCtx) return;
+
+            const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+            notes.forEach((freq, idx) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.08);
+                
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime + idx * 0.08);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + idx * 0.08 + 0.6);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.start(audioCtx.currentTime + idx * 0.08);
+                osc.stop(audioCtx.currentTime + idx * 0.08 + 0.6);
+            });
+        }
+
+        // 八音盒風格簡單背景音樂
+        function toggleMusic() {
+            initAudio();
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const musicBtn = document.getElementById('musicBtn');
+            const musicIcon = document.getElementById('musicIcon');
+            const musicText = document.getElementById('musicText');
+
+            if (isPlaying) {
+                clearInterval(melodyInterval);
+                isPlaying = false;
+                musicIcon.className = 'fa-solid fa-music';
+                musicText.innerText = '播放音樂';
+                musicBtn.classList.remove('bg-gold-500', 'text-white');
+            } else {
+                isPlaying = true;
+                musicIcon.className = 'fa-solid fa-pause';
+                musicText.innerText = '暫停音樂';
+                musicBtn.classList.add('bg-gold-500', 'text-white');
+
+                // 溫馨琴音音符 (祝你生日快樂 + 抒情旋律片段)
+                const notes = [
+                    261.63, 261.63, 293.66, 261.63, 349.23, 329.63,
+                    261.63, 261.63, 293.66, 261.63, 392.00, 349.23,
+                    261.63, 261.63, 523.25, 440.00, 349.23, 329.63, 293.66,
+                    466.16, 466.16, 440.00, 349.23, 392.00, 349.23
+                ];
+                let step = 0;
+
+                melodyInterval = setInterval(() => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    
+                    osc.type = 'triangle'; // 較溫柔的音色
+                    osc.frequency.setValueAtTime(notes[step], audioCtx.currentTime);
+
+                    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.45);
+
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.5);
+
+                    step = (step + 1) % notes.length;
+                }, 500);
+            }
+        }
+
+        const canvas = document.getElementById('petalsCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Petal {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = -20;
+                this.size = Math.random() * 8 + 6;
+                this.speedY = Math.random() * 1.2 + 0.6;
+                this.speedX = Math.random() * 0.8 - 0.4;
+                this.angle = Math.random() * 360;
+                this.spin = Math.random() * 2 - 1;
+                this.color = ['#FBCFE8', '#FDE68A', '#E9D8FD', '#FED7D7'][Math.floor(Math.random() * 4)];
+                this.opacity = Math.random() * 0.6 + 0.3;
+            }
+
+            update() {
+                this.y += this.speedY;
+                this.x += Math.sin(this.y * 0.01) + this.speedX;
+                this.angle += this.spin;
+
+                if (this.y > canvas.height + 20) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate((this.angle * Math.PI) / 180);
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.color;
+
+                // 繪製心形/花瓣橢圓
+                ctx.beginPath();
+                ctx.ellipse(0, 0, this.size, this.size / 2, 0, 0, 2 * Math.PI);
+                ctx.fill();
+
+                ctx.restore();
+            }
+        }
+
+        const petals = Array.from({ length: 35 }, () => new Petal());
+
+        function animatePetals() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            petals.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animatePetals);
+        }
+
+        window.onload = function() {
+            renderContent();
+            animatePetals();
+        };
+    </script>
+</body>
+</html>
