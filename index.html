@@ -1,10 +1,9 @@
-<html>
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>沙特驚喜- 🎉 教師節 x 生日🎂</title>
+    <title>沙特驚喜 - 🎉 教師節 x 生日🎂</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -51,7 +50,6 @@
             color: #f8fafc;
         }
 
-        /* Glassmorphism cards */
         .glass-card {
             background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(16px);
@@ -77,7 +75,6 @@
             box-shadow: 0 8px 32px 0 rgba(234, 179, 8, 0.2);
         }
 
-        /* Custom Floating Animations */
         @keyframes floatSlow {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
             50% { transform: translateY(-12px) rotate(3deg); }
@@ -108,7 +105,6 @@
             animation: cockroachFly 1.2s cubic-bezier(0.36, 0, 0.66, 1);
         }
 
-        /* Tab switching transitions */
         .tab-btn {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -118,7 +114,6 @@
             box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -153,13 +148,11 @@
         </div>
 
         <div class="flex items-center space-x-2 sm:space-x-3">
-            <!-- Party Music Button -->
             <button id="musicBtn" onclick="toggleMusic()" class="flex items-center space-x-2 px-4 py-2 rounded-2xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white shadow-lg text-xs font-bold transition-all active:scale-95 border border-sky-300/40">
                 <i id="musicIcon" class="fa-solid fa-music"></i>
                 <span id="musicText">播放歡慶曲</span>
             </button>
 
-            <!-- Customizer Modal Opener -->
             <button onclick="openCustomizer()" class="flex items-center space-x-2 px-4 py-2 rounded-2xl bg-gradient-to-r from-amber-500 to-emerald-600 hover:from-amber-400 hover:to-emerald-500 text-white shadow-lg text-xs font-bold transition-all active:scale-95 border border-amber-300/40">
                 <i class="fa-solid fa-wand-magic-sparkles"></i>
                 <span>編輯祝詞</span>
@@ -186,9 +179,8 @@
 
     <main class="w-full max-w-4xl z-20 flex-1 flex flex-col justify-center items-center">
         
-        <!-- CARD 1: 雷麗 Lei-Li (Let It Go Ice Theme) -->
+        <!-- CARD 1: 雷麗 -->
         <div id="card-leili" class="w-full glass-card-ice rounded-3xl p-6 sm:p-10 text-center relative overflow-hidden shadow-2xl animate-float">
-            <!-- Frozen decorative background elements -->
             <div class="absolute -top-10 -right-10 text-8xl opacity-20 pointer-events-none">❄️</div>
             <div class="absolute -bottom-10 -left-10 text-8xl opacity-20 pointer-events-none">🧊</div>
             
@@ -215,21 +207,19 @@
                     </p>
                 </div>
 
-                <!-- Interactive Skill Buttons -->
                 <div class="flex flex-wrap justify-center gap-3 pt-2">
                     <button onclick="triggerIceMagic(event)" class="px-6 py-3 rounded-2xl bg-gradient-to-r from-sky-400 to-blue-600 hover:from-sky-300 hover:to-blue-500 text-white font-bold text-sm shadow-lg hover:shadow-sky-500/50 transition-all active:scale-95 border border-sky-200/50 flex items-center space-x-2">
                         <span>❄️ 釋放 Let It Go 冰雪魔咒</span>
                     </button>
                     <button onclick="triggerSnowStorm()" class="px-6 py-3 rounded-2xl bg-sky-900/80 hover:bg-sky-800 text-sky-200 font-bold text-sm shadow-md transition-all active:scale-95 border border-sky-400/40 flex items-center space-x-2">
-                        <span>🌨️ 召喚極光暴風雪</span>
+                        <span>🌨️️ 召喚極光暴風雪</span>
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- CARD 2: 珆亘 Yi-Xuan (毛利小蟑螂 Warrior Theme) -->
+        <!-- CARD 2: 珆亘 -->
         <div id="card-yixuan" class="w-full glass-card-warrior rounded-3xl p-6 sm:p-10 text-center relative overflow-hidden shadow-2xl hidden animate-float">
-            <!-- Tribal tropical bug warrior decorative elements -->
             <div class="absolute -top-10 -right-10 text-8xl opacity-20 pointer-events-none">🪲</div>
             <div class="absolute -bottom-10 -left-10 text-8xl opacity-20 pointer-events-none">🌴</div>
 
@@ -257,7 +247,6 @@
                     </p>
                 </div>
 
-                <!-- Interactive Skill Buttons -->
                 <div class="flex flex-wrap justify-center gap-3 pt-2">
                     <button onclick="triggerRoachCharge(event)" class="px-6 py-3 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-600 to-orange-500 hover:from-emerald-400 hover:to-orange-400 text-white font-bold text-sm shadow-lg hover:shadow-emerald-500/50 transition-all active:scale-95 border border-emerald-200/50 flex items-center space-x-2">
                         <span>毛利小蟑螂 飛天衝鋒！</span>
@@ -269,9 +258,8 @@
             </div>
         </div>
 
-        <!-- CARD 3: 教師節感謝 Teachers' Day Theme -->
+        <!-- CARD 3: 教師節感謝 -->
         <div id="card-teachers" class="w-full glass-card-teacher rounded-3xl p-6 sm:p-10 text-center relative overflow-hidden shadow-2xl hidden animate-float">
-            <!-- Academic chalkboard elements -->
             <div class="absolute -top-10 -right-10 text-8xl opacity-20 pointer-events-none">🎓</div>
             <div class="absolute -bottom-10 -left-10 text-8xl opacity-20 pointer-events-none">🍎</div>
 
@@ -281,7 +269,7 @@
                 </div>
 
                 <div class="flex justify-center items-center space-x-3 my-2">
-                    <span class="text-4xl sm:text-5xl">👨‍🏫</span>
+                    <span class="text-4xl sm:text-5xl">👨‍‍🏫</span>
                     <h2 id="title-teachers" class="font-funny text-3xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-100 to-teal-200 drop-shadow-md">
                         祝 所有老師教師節快樂！
                     </h2>
@@ -300,7 +288,6 @@
                     </p>
                 </div>
 
-                <!-- Interactive Skill Buttons -->
                 <div class="flex flex-wrap justify-center gap-3 pt-2">
                     <button onclick="triggerTeacherSalute(event)" class="px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-teal-600 hover:from-amber-400 hover:to-teal-500 text-white font-bold text-sm shadow-lg hover:shadow-amber-500/50 transition-all active:scale-95 border border-amber-200/50 flex items-center space-x-2">
                         <span>💐 獻上敬師鮮花與金星</span>
@@ -314,13 +301,13 @@
 
     </main>
 
-    <footer class="w-full max-w-4xl z-20 text-center py-4 mt-6 text-xs text-slate-400 font-cute">
-        <p>🎉 Happy Teacher's Day、Happy Birthday for 雷麗 & 珆亘 🎉</p><br>
-        <p>如有想要上生日網站，請洽沙特本人<p><br>
-        <p>2026-©沙特</p>
+    <footer class="w-full max-w-4xl z-20 text-center py-4 mt-6 text-xs text-slate-400 font-cute space-y-1">
+        <p>🎉 Happy Teacher's Day、Happy Birthday for 雷麗 & 珆亘 🎉</p>
+        <p>如有想要上生日網站，請洽沙特本人</p>
+        <p>2026 © 沙特</p>
     </footer>
 
-    <!-- Customizable Modal -->
+    <!-- Modal -->
     <div id="customModal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-slate-900 rounded-3xl max-w-lg w-full p-6 border border-slate-700 shadow-2xl text-slate-200">
             <div class="flex justify-between items-center border-b border-slate-800 pb-3 mb-4">
@@ -357,7 +344,6 @@
     </div>
 
     <script>
-        // --- Tab Switching Logic ---
         function switchTab(tabName) {
             const tabs = ['leili', 'yixuan', 'teachers'];
             tabs.forEach(t => {
@@ -374,7 +360,6 @@
             playBeep(440, 0.1);
         }
 
-        // --- Customizer Modal ---
         function openCustomizer() {
             document.getElementById('edit-leili').value = document.getElementById('body-leili').innerText;
             document.getElementById('edit-yixuan').value = document.getElementById('body-yixuan').innerText;
@@ -394,9 +379,6 @@
             confetti({ particleCount: 50, spread: 60 });
         }
 
-        // --- Special Interactive Triggers ---
-
-        // 1. Lei-Li Ice Magic
         function triggerIceMagic(e) {
             playIceMagicSound();
             confetti({
@@ -434,7 +416,6 @@
             })();
         }
 
-        // 2. Yi-Xuan Roach Warrior Charge
         function triggerRoachCharge(e) {
             playRoachSound();
             
@@ -466,7 +447,6 @@
             });
         }
 
-        // 3. Teacher's Day Salute
         function triggerTeacherSalute(e) {
             playTeacherSound();
             confetti({
@@ -487,7 +467,6 @@
             });
         }
 
-        // --- Web Audio API Melody & Sound Effects Synthesis ---
         let audioCtx = null;
         let isMusicPlaying = false;
         let musicTimer = null;
@@ -561,7 +540,6 @@
                 text.innerText = '暫停音樂';
                 btn.classList.add('from-amber-500', 'to-rose-600');
 
-                // Happy Birthday & Celebration Chimes Sequence
                 const melody = [
                     261.63, 261.63, 293.66, 261.63, 349.23, 329.63,
                     261.63, 261.63, 293.66, 261.63, 392.00, 349.23,
@@ -577,7 +555,6 @@
             }
         }
 
-        // --- Canvas Snowflakes & Floating Magic Background Particles ---
         const canvas = document.getElementById('bgCanvas');
         const ctx = canvas.getContext('2d');
 
@@ -636,7 +613,6 @@
         window.onload = function() {
             animateBg();
         };
-        <p>2026沙特</p>
     </script>
 </body>
 </html>
